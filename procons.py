@@ -47,6 +47,7 @@ def procons(p1, p2, alpha_1, alpha_2, N):
     return PR/N
 
 
+#Some tests
 a = procons(3, 5, 1, 1/2)
 a = sigma_2_client_decision(2, 1/2, 1000)
 plt.hist(a, bins = 10)
