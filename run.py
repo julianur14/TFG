@@ -18,8 +18,6 @@ def run_pricing(config):
     #Define params from config
     lower_lim = config["lower_lim"]
     upper_lim = config["upper_lim"]
-    min_value = config["min_value"]
-    max_value = config["max_value"]
     poly_degree = config["poly_degree"]
     n_steps = config["n_steps"]
     n_samples = config["n_samples"]
@@ -34,10 +32,10 @@ def run_pricing(config):
     price_step = config["price_step"]
     
     #Generate p1 samples
-    p1_samples = inverse_transform_sampling(n_samples, lower_lim, upper_lim, min_value, max_value, poly_degree, p_val)
+    p1_samples = inverse_transform_sampling(n_samples, lower_lim, upper_lim, value_1, init_price_1, poly_degree, p_val)
     
     #Paint the samples
-    probs = np.array([utils.unnorm_pdf(x, min_value, max_value, poly_degree) for x in p_val])
+    probs = np.array([utils.unnorm_pdf(x, value_1, init_price_1, poly_degree) for x in p_val])
     plt.cla()
     plt.hist(p1_samples, bins = 50, density = True)
     plt.plot(p_val, probs * utils.analytic_norm_constant_q2_p1(p_val, probs), linewidth = 3)
@@ -50,6 +48,7 @@ def run_pricing(config):
     prices_r1 = np.arange(value_1, init_price_1, price_step)
     final_price = pricing(p2_samples, prices_r1, alpha_1, alpha_2, p_val, N, value_1)
     
-    return final_price
+    return p1_samples, p2_samples, final_price
     
 a = run_pricing(config)
+a, b, c= run_pricing(config)
