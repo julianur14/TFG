@@ -5,6 +5,7 @@ Created on Mon Jan  2 13:04:23 2023
 @author: 42845
 """
 import numpy as np
+import pandas as pd
 import matplotlib.pyplot as plt
 from scipy.stats import uniform, gamma, norm 
 from pricing import pricing
@@ -46,9 +47,17 @@ def run_pricing(config):
         
     #Fix final price for p1
     prices_r1 = np.arange(value_1, init_price_1, price_step)
-    final_price = pricing(p2_samples, prices_r1, alpha_1, alpha_2, p_val, N, value_1)
+    final_price, prob, list_probs, util = pricing(p2_samples, prices_r1, alpha_1, alpha_2, p_val, N, value_1)
     
-    return p1_samples, p2_samples, final_price
+    return prices_r1, p1_samples, p2_samples, final_price, prob, list_probs, util
     
 a = run_pricing(config)
-a, b, c= run_pricing(config)
+a, b, c, d, e, f, g= run_pricing(config)
+
+df = pd.DataFrame()
+df['prices'] = a
+df['probs'] = f
+df['utils'] = g
+plt.plot(df)
+df.plot.scatter(x = 'prices', y = 'probs')
+df.plot.scatter(x = 'prices', y = 'utils')
